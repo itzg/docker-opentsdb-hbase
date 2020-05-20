@@ -17,4 +17,11 @@ ARG OTSDB_VERSION=2.4.0
 ADD https://github.com/OpenTSDB/opentsdb/releases/download/v${OTSDB_VERSION}/opentsdb-${OTSDB_VERSION}_all.deb /tmp/opentsdb-${OTSDB_VERSION}_all.deb
 
 RUN dpkg -i /tmp/opentsdb-${OTSDB_VERSION}_all.deb && \
-  rm /tmp/opentsdb-${OTSDB_VERSION}_all.deb
+  rm /tmp/opentsdb-${OTSDB_VERSION}_all.deb && \
+  ln -s /usr/share/opentsdb/bin/tsdb /usr/bin
+
+COPY hbase-site.xml ${HBASE_HOME}/conf/hbase-site.xml
+COPY opentsdb.conf /etc/opentsdb/opentsdb.conf
+
+COPY entrypoint.sh /entrypoint
+ENTRYPOINT ["/entrypoint"]

@@ -1,0 +1,57 @@
+### create tree by tagk=dc
+POST http://localhost:4242/api/tree?name=by_dc
+
+> {% client.global.set("tree_id_dc", response.body.treeId); %}
+
+### ... create top level rule
+POST http://localhost:4242/api/tree/rule?treeid={{tree_id_dc}}&level=0&order=0&type=TAGK&field=dc
+
+### ... enable the tree
+POST http://localhost:4242/api/tree?treeid={{tree_id_dc}}&enabled=true
+
+### create tree by metric
+POST http://localhost:4242/api/tree?name=by_metric
+
+> {% client.global.set("tree_id_metric", response.body.treeId); %}
+
+### Create top level rule
+POST http://localhost:4242/api/tree/rule
+Content-Type: application/json
+
+{
+  "type": "METRIC",
+  "separator": "\\.",
+  "description": "Split the metric on periods",
+  "level": 0,
+  "order": 0,
+  "treeId": {{tree_id_metric}}
+}
+
+### enable the tree
+POST http://localhost:4242/api/tree?treeid={{tree_id_metric}}&enabled=true
+
+### send a metric
+POST http://localhost:4242/api/put
+Content-Type: application/json
+
+{
+  "metric": "sys.cpu.nice",
+  "timestamp": {{$timestamp}},
+  "value": {{$randomInt}},
+  "tags": {
+    "host": "web01",
+    "dc": "lga"
+  }
+}
+
+### get resulting tagk=dc tree
+GET http://localhost:4242/api/tree/branch?treeid={{tree_id_dc}}
+
+### get resulting metric tree
+GET http://localhost:4242/api/tree/branch?treeid={{tree_id_metric}}
+
+### get metrics
+GET http://localhost:4242/api/query?start=1h-ago&m=sum:sys.cpu.nice{dc=lga}
+
+###
+# docker exec docker-opentsdb-hbase_opentsdb_1 tsdb uid treesync --verbose --zkquorum=hbase

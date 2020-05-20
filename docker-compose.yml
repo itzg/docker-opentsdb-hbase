@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  hbase:
+    build:
+      context: hbase
+    volumes:
+    - hbase:/data
+    # needs stable hostname that correlates to service alias
+    hostname: hbase
+  opentsdb:
+    build:
+      context: opentsdb
+    depends_on:
+      - hbase
+    ports:
+    - 4242:4242
+
+volumes:
+  hbase: {}
