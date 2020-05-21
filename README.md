@@ -1,4 +1,4 @@
-This repo contains a Docker composition that builds an HBase and an OpenTSDB container and runs a single node of each together.
+This repo contains a Docker composition that builds an HBase and an OpenTSDB image/container and runs a single node of each together.
 
 ## Usage
 
@@ -6,9 +6,9 @@ This repo contains a Docker composition that builds an HBase and an OpenTSDB con
 docker-compose up
 ```
 
-After stopping the composition, it's best to follow-up with a `docker-compose down -v` to ensure the HBase volume is removed
-
 where port 4242 is exposed for OpenTSDB HTTP API access.
+
+After stopping the composition, it's best to follow-up with a `docker-compose down -v` to ensure the HBase volume is removed
 
 ## Building with a particular release of HBase or OpenTSDB:
 
