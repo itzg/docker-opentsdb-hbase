@@ -53,5 +53,8 @@ GET http://localhost:4242/api/tree/branch?treeid={{tree_id_metric}}
 ### get metrics
 GET http://localhost:4242/api/query?start=1h-ago&m=sum:sys.cpu.nice{dc=lga}
 
+### query tsmeta
+GET http://localhost:4242/api/uid/tsmeta?m=sys.cpu.nice&dc=lga
+
 ###
 # docker exec docker-opentsdb-hbase_opentsdb_1 tsdb uid treesync --verbose --zkquorum=hbase

@@ -21,7 +21,7 @@ RUN dpkg -i /tmp/opentsdb-${OTSDB_VERSION}_all.deb && \
   ln -s /usr/share/opentsdb/bin/tsdb /usr/bin
 
 COPY hbase-site.xml ${HBASE_HOME}/conf/hbase-site.xml
-COPY opentsdb.conf /etc/opentsdb/opentsdb.conf
+COPY opentsdb.conf logback.xml /etc/opentsdb/
 
 COPY entrypoint.sh /entrypoint
 ENTRYPOINT ["/entrypoint"]
