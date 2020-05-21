@@ -57,10 +57,10 @@ GET http://localhost:4242/api/query?start=1h-ago&m=sum:sys.cpu.nice{dc=lga}
 GET http://localhost:4242/api/uid/tsmeta?m=sys.cpu.nice&dc=lga
 
 ### test dc tree
-GET http://localhost:4242/api/tree/test?treeid={{tree_id_dc}}&tsuids=000001000001000001000002000002
+#GET http://localhost:4242/api/tree/test?treeid={{tree_id_dc}}&tsuids=000001000001000001000002000002
 
 ### test metric tree
-GET http://localhost:4242/api/tree/test?treeid={{tree_id_metric}}&tsuids=000001000001000001000002000002
+#GET http://localhost:4242/api/tree/test?treeid={{tree_id_metric}}&tsuids=000001000001000001000002000002
 
 ###
 # Some operations to manually sync...but don't help with 2.4.0
