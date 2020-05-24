@@ -6,6 +6,9 @@ POST http://localhost:4242/api/tree?name=by_dc
 ### ... create top level rule
 POST http://localhost:4242/api/tree/rule?treeid={{tree_id_dc}}&level=0&order=0&type=TAGK&field=dc
 
+### ... create final metric rule
+POST http://localhost:4242/api/tree/rule?treeid={{tree_id_dc}}&level=1&order=0&type=METRIC
+
 ### ... enable the tree
 POST http://localhost:4242/api/tree?treeid={{tree_id_dc}}&enabled=true
 
