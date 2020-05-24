@@ -8,13 +8,22 @@ services:
     - hbase:/data
     # needs stable hostname that correlates to service alias
     hostname: hbase
-  opentsdb:
+  opentsdb2:
     build:
       context: opentsdb
     depends_on:
       - hbase
     ports:
     - 4242:4242
+  opentsdb3:
+    image: opentsdb/opentsdb:3.0.90-SNAPSHOT
+    depends_on:
+      - hbase
+    ports:
+    - 4242:4242
+    volumes:
+    - ./opentsdb/opentsdb.yaml:/etc/opentsdb/opentsdb.yaml:ro
+    entrypoint: /usr/share/opentsdb/bin/tsdb tsd --config.providers=file:///etc/opentsdb/opentsdb.yaml --tsd.storage.zookeeper.quorum=hbase
 
 volumes:
   hbase: {}
