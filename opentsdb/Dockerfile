@@ -20,8 +20,12 @@ RUN dpkg -i /tmp/opentsdb-${OTSDB_VERSION}_all.deb && \
   rm /tmp/opentsdb-${OTSDB_VERSION}_all.deb && \
   ln -s /usr/share/opentsdb/bin/tsdb /usr/bin
 
+ARG NOOP_RTPUBLISHER_VERSION=51e884b8b6
+ADD https://jitpack.io/com/github/itzg/noop-opentsdb-rt-publisher/${NOOP_RTPUBLISHER_VERSION}/noop-opentsdb-rt-publisher-${NOOP_RTPUBLISHER_VERSION}.jar /usr/share/opentsdb/plugins/noop-opentsdb-rt-publisher.jar
 COPY hbase-site.xml ${HBASE_HOME}/conf/hbase-site.xml
 COPY opentsdb.conf logback.xml /etc/opentsdb/
+
+RUN ls -l /usr/share/opentsdb/plugins/
 
 COPY entrypoint.sh /entrypoint
 ENTRYPOINT ["/entrypoint"]
