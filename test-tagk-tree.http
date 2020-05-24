@@ -33,12 +33,38 @@ Content-Type: application/json
 ### enable the tree
 POST http://localhost:4242/api/tree?treeid={{tree_id_metric}}&enabled=true
 
-### send a metric
+### send a metric batch
+POST http://localhost:4242/api/put
+Content-Type: application/json
+
+[
+  {
+  "metric": "sys.cpu.nice",
+  "timestamp": {{$timestamp}},
+  "value": {{$randomInt}},
+  "tags": {
+    "host": "web01",
+    "dc": "lga"
+  }
+},
+{
+  "metric": "sys.cpu.nice",
+  "timestamp": {{$timestamp}},
+  "value": {{$randomInt}},
+  "tags": {
+    "host": "web02",
+    "dc": "lga"
+  }
+}
+]
+
+
+### send another metric
 POST http://localhost:4242/api/put
 Content-Type: application/json
 
 {
-  "metric": "sys.cpu.nice",
+  "metric": "sys.cpu.user",
   "timestamp": {{$timestamp}},
   "value": {{$randomInt}},
   "tags": {
@@ -47,17 +73,22 @@ Content-Type: application/json
   }
 }
 
-### get resulting tagk=dc tree
-GET http://localhost:4242/api/tree/branch?treeid={{tree_id_dc}}
-
-### get resulting metric tree
-GET http://localhost:4242/api/tree/branch?treeid={{tree_id_metric}}
-
 ### get metrics
 GET http://localhost:4242/api/query?start=1h-ago&m=sum:sys.cpu.nice{dc=lga}
 
 ### query tsmeta
 GET http://localhost:4242/api/uid/tsmeta?m=sys.cpu.nice&dc=lga
+
+### get resulting tagk=dc tree
+GET http://localhost:4242/api/tree/branch?treeid={{tree_id_dc}}
+
+> {% client.global.set("first_branch_id", response.body.branches[0].branchId); %}
+
+### get resulting metric tree
+GET http://localhost:4242/api/tree/branch?treeid={{tree_id_metric}}
+
+### branch lga of tagk=dc tree
+GET http://localhost:4242/api/tree/branch?treeid={{tree_id_dc}}&branch={{first_branch_id}}
 
 ### test dc tree
 #GET http://localhost:4242/api/tree/test?treeid={{tree_id_dc}}&tsuids=000001000001000001000002000002
